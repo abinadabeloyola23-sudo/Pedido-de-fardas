@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Farda do Curso de Redes</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .container {
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    max-width: 900px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    overflow: hidden;
+  }
+
+  /* ---------- Área da imagem ---------- */
+  .imagem {
+    background: #f8fafc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 450px;
+    padding: 25px;
+    overflow: hidden;
+  }
+
+  .imagem img {
+    max-width: 100%;
+    max-height: 450px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    transition: opacity 0.3s ease;
+  }
+
+  /* ---------- Área do formulário ---------- */
+  .info {
+    padding: 35px 32px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .marca {
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #2a5298;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  h1 {
+    font-size: 26px;
+    color: #222;
+    margin-bottom: 10px;
+    line-height: 1.2;
+  }
+
+  .preco {
+    font-size: 22px;
+    font-weight: 700;
+    color: #16a34a;
+    margin-bottom: 15px;
+  }
+
+  .preco small {
+    font-size: 13px;
+    font-weight: 500;
+    color: #888;
+  }
+
+  label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 8px;
+    margin-top: 14px;
+  }
+
+  input[type="text"] {
+    width: 100%;
+    padding: 12px 14px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 16px;
+    font-family: inherit;
+    transition: border 0.2s;
+    background: #fafafa;
+  }
+
+  input[type="text"]:focus {
+    outline: none;
+    border-color: #2a5298;
+    background: #fff;
+  }
+
+  .opcoes {
+    display: grid;
+    gap: 8px;
+  }
+
+  .opcoes.turma { grid-template-columns: repeat(2, 1fr); }
+  .opcoes.modelo { grid-template-columns: repeat(2, 1fr); }
+  .opcoes.tamanhos { grid-template-columns: repeat(5, 1fr); }
+
+  .opcoes input[type="radio"] { display: none; }
+
+  .opcoes label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 0;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    color: #555;
+    margin: 0;
+    transition: all 0.2s;
+    background: #fafafa;
+    font-size: 15px;
+  }
+
+  .opcoes input[type="radio"]:checked + label {
+    background: #2a5298;
+    color: #fff;
+    border-color: #2a5298;
+    transform: scale(1.05);
+  }
+
+  .contador {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .contador button {
+    width: 45px;
+    height: 45px;
+    border: 2px solid #e0e0e0;
+    background: #fafafa;
+    border-radius: 10px;
+    font-size: 22px;
+    font-weight: 700;
+    color: #2a5298;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .contador button:hover {
+    background: #2a5298;
+    color: #fff;
+    border-color: #2a5298;
+  }
+
+  .contador button:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    background: #fafafa;
+    color: #999;
+    border-color: #e0e0e0;
+  }
+
+  .contador input {
+    flex: 1;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 700;
+    color: #222;
+    padding: 12px 0;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    background: #fff;
+    font-family: inherit;
+    -moz-appearance: textfield;
+  }
+
+  .contador input::-webkit-outer-spin-button,
+  .contador input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .total-box {
+    margin-top: 18px;
+    padding: 14px 16px;
+    background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .total-box .rotulo {
+    font-size: 14px;
+    font-weight: 600;
+    color: #166534;
+  }
+
+  .total-box .valor-total {
+    font-size: 24px;
+    font-weight: 800;
+    color: #166534;
+  }
+
+  .btn-pagar {
+    margin-top: 18px;
+    padding: 16px;
+    background: #16a34a;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-size: 17px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .btn-pagar:hover {
+    background: #15803d;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(22, 163, 74, 0.4);
+  }
+
+  .btn-pagar:active { transform: translateY(0); }
+
+  .btn-pagar:disabled {
+    opacity: 0.7;
+    cursor: wait;
+    transform: none;
+  }
+
+  .aviso {
+    font-size: 12px;
+    color: #888;
+    text-align: center;
+    margin-top: 12px;
+  }
+
+  /* ---------- Tela Pix ---------- */
+  .pix-box {
+    display: none;
+    flex-direction: column;
+  }
+
+  .pix-box.ativo { display: flex; }
+
+  .sucesso {
+    background: #dcfce7;
+    color: #166534;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 14px;
+    text-align: center;
+    margin-bottom: 18px;
+  }
+
+  .resumo {
+    background: #f8fafc;
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 18px;
+    font-size: 14px;
+    color: #444;
+  }
+
+  .resumo div {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+  }
+
+  .resumo strong { color: #222; }
+
+  .resumo .linha-total {
+    border-top: 2px solid #e0e0e0;
+    margin-top: 8px;
+    padding-top: 10px;
+    font-size: 16px;
+  }
+
+  .resumo .linha-total strong {
+    color: #16a34a;
+    font-size: 20px;
+    font-weight: 800;
+  }
+
+  .titulo-pix {
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #16a34a;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 12px;
+  }
+
+  .campo-pix {
+    background: #f8fafc;
+    border: 2px dashed #16a34a;
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+  }
+
+  .campo-pix .rotulo {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #888;
+    margin-bottom: 4px;
+  }
+
+  .campo-pix .valor {
+    font-size: 16px;
+    font-weight: 700;
+    color: #222;
+    word-break: break-all;
+  }
+
+  .btn-copiar {
+    padding: 14px;
+    background: #2a5298;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: 12px;
+  }
+
+  .btn-copiar:hover { background: #1e3c72; }
+  .btn-copiar.copiado { background: #16a34a; }
+
+  .aviso-comprovante {
+    background: #fef3c7;
+    border-left: 4px solid #f59e0b;
+    padding: 12px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #78350f;
+    line-height: 1.5;
+  }
+
+  /* ---------- Celular ---------- */
+  @media (max-width: 700px) {
+    body { padding: 15px; }
+
+    .container {
+      grid-template-columns: 1fr;
+    }
+
+    .imagem {
+      min-height: 280px;
+      padding: 20px;
+    }
+
+    .imagem img {
+      max-height: 260px;
+    }
+
+    .info {
+      padding: 22px 20px;
+    }
+
+    h1 { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="imagem">
+    <img id="foto-camisa" 
+         src="https://i.imgur.com/6VaswJg.jpg" 
+         alt="Farda do Curso de Redes">
+  </div>
+
+  <div class="info">
+    <div id="tela-formulario">
+      <div class="marca">Farda Oficial</div>
+      <h1>Farda do Curso de Redes</h1>
+      <div class="preco">R$ 65,00 <small>por unidade</small></div>
+
+      <label>Turma:</label>
+      <div class="opcoes turma">
+        <input type="radio" name="turma" id="turma-1" value="1° Redes" checked>
+        <label for="turma-1">1° Redes</label>
+
+        <input type="radio" name="turma" id="turma-2" value="2° Redes">
+        <label for="turma-2">2° Redes</label>
+      </div>
+
+      <label>Modelo:</label>
+      <div class="opcoes modelo">
+        <input type="radio" name="modelo" id="mod-M" value="Masculino" checked>
+        <label for="mod-M">Masculino</label>
+
+        <input type="radio" name="modelo" id="mod-F" value="Feminino">
+        <label for="mod-F">Feminino</label>
+      </div>
+
+      <label>Tamanho:</label>
+      <div class="opcoes tamanhos">
+        <input type="radio" name="tamanho" id="tam-P" value="P">
+        <label for="tam-P">P</label>
+
+        <input type="radio" name="tamanho" id="tam-M" value="M" checked>
+        <label for="tam-M">M</label>
+
+        <input type="radio" name="tamanho" id="tam-G" value="G">
+        <label for="tam-G">G</label>
+
+        <input type="radio" name="tamanho" id="tam-GG" value="GG">
+        <label for="tam-GG">GG</label>
+
+        <input type="radio" name="tamanho" id="tam-XG" value="XG">
+        <label for="tam-XG">XG</label>
+      </div>
+
+      <label>Quantidade:</label>
+      <div class="contador">
+        <button type="button" onclick="alterarQuantidade(-1)" id="btn-menos">−</button>
+        <input type="number" id="quantidade" value="1" min="1" max="50" readonly>
+        <button type="button" onclick="alterarQuantidade(1)" id="btn-mais">+</button>
+      </div>
+
+      <label for="nome">Seu nome completo:</label>
+      <input type="text" id="nome" placeholder="Ex: João da Silva" required>
+
+      <div class="total-box">
+        <span class="rotulo">💰 Total a pagar:</span>
+        <span class="valor-total" id="total">R$ 65,00</span>
+      </div>
+
+      <button class="btn-pagar" id="btn-pagar" onclick="enviarPedido()">
+        💰 Gerar pagamento Pix
+      </button>
+      <div class="aviso">O pedido será registrado e a chave Pix aparecerá na tela</div>
+    </div>
+
+    <div class="pix-box" id="tela-pix">
+      <div class="sucesso">✅ Pedido registrado com sucesso!</div>
+
+      <div class="resumo">
+        <div><span>Nome:</span> <strong id="resumo-nome">-</strong></div>
+        <div><span>Turma:</span> <strong id="resumo-turma">-</strong></div>
+        <div><span>Modelo:</span> <strong id="resumo-modelo">-</strong></div>
+        <div><span>Tamanho:</span> <strong id="resumo-tamanho">-</strong></div>
+        <div><span>Quantidade:</span> <strong id="resumo-quantidade">-</strong></div>
+        <div class="linha-total">
+          <span>Total:</span>
+          <strong id="resumo-valor">R$ 65,00</strong>
+        </div>
+      </div>
+
+      <div class="titulo-pix">💳 Pague com Pix</div>
+
+      <div class="campo-pix">
+        <div class="rotulo">Banco</div>
+        <div class="valor">Inter</div>
+      </div>
+
+      <div class="campo-pix">
+        <div class="rotulo">Recebedor</div>
+        <div class="valor">Abinadabe Pereira Loyola dos Santos</div>
+      </div>
+
+      <div class="campo-pix">
+        <div class="rotulo">Chave Pix (telefone)</div>
+        <div class="valor" id="chave-pix">+55 94 99175-8924</div>
+      </div>
+
+      <button class="btn-copiar" id="btn-copiar" onclick="copiarChave()">
+        📋 Copiar chave Pix
+      </button>
+
+      <div class="aviso-comprovante">
+        📸 Após pagar, envie o <strong>comprovante no WhatsApp</strong> para 
+        <strong>(94) 99175-8924</strong> junto com seu nome, para confirmarmos o pedido.
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ⚠️ URL do Google Apps Script
+const URL_PLANILHA = 'https://script.google.com/macros/s/AKfycbxmiCW0jOtaKC5rAbbKsrN78kiSg0ZpGXDYtcaD6RNpBgujCuY-6vko_aQRNLNMjaPoww/exec';
+
+// Chave Pix
+const CHAVE_PIX = '+5594991758924';
+const CHAVE_PIX_FORMATADA = '+55 94 99175-8924';
+
+// Preço por unidade
+const PRECO_UNIDADE = 65.00;
+
+// ---------- URLs das fotos ----------
+const FOTO_MASCULINA = 'https://i.imgur.com/6VaswJg.jpg';
+const FOTO_FEMININA  = 'https://i.imgur.com/sr9lP4C.jpg'; // ⚠️ troque quando tiver o link certo
+
+// ----------------------------------------------------------
+// Troca de foto quando muda o modelo
+// ----------------------------------------------------------
+function trocarFoto() {
+  const modelo = document.querySelector('input[name="modelo"]:checked').value;
+  const img = document.getElementById('foto-camisa');
+
+  img.style.opacity = '0';
+  setTimeout(() => {
+    img.src = (modelo === 'Feminino') ? FOTO_FEMININA : FOTO_MASCULINA;
+    img.style.opacity = '1';
+  }, 200);
+}
+
+// Fallback: se a foto não carregar, volta pra masculina
+function fotoComErro(img) {
+  img.onerror = null;
+  img.src = FOTO_MASCULINA;
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('input[name="modelo"]').forEach(radio => {
+    radio.addEventListener('change', trocarFoto);
+  });
+
+  document.getElementById('foto-camisa').addEventListener('error', function() {
+    fotoComErro(this);
+  });
+
+  document.getElementById('btn-menos').disabled = true;
+  atualizarTotal();
+});
+
+// ----------------------------------------------------------
+// Contador de quantidade
+// ----------------------------------------------------------
+function alterarQuantidade(delta) {
+  const input = document.getElementById('quantidade');
+  let valor = parseInt(input.value) || 1;
+  valor += delta;
+
+  if (valor < 1) valor = 1;
+  if (valor > 50) valor = 50;
+
+  input.value = valor;
+
+  document.getElementById('btn-menos').disabled = (valor <= 1);
+  document.getElementById('btn-mais').disabled = (valor >= 50);
+
+  atualizarTotal();
+}
+
+function atualizarTotal() {
+  const qtd = parseInt(document.getElementById('quantidade').value) || 1;
+  const total = qtd * PRECO_UNIDADE;
+  document.getElementById('total').textContent = 
+    'R$ ' + total.toFixed(2).replace('.', ',');
+}
+
+// ----------------------------------------------------------
+// Envio do pedido
+// ----------------------------------------------------------
+async function enviarPedido() {
+  const nome = document.getElementById('nome').value.trim();
+  const turmaSelecionada = document.querySelector('input[name="turma"]:checked');
+  const modeloSelecionado = document.querySelector('input[name="modelo"]:checked');
+  const tamanhoSelecionado = document.querySelector('input[name="tamanho"]:checked');
+  const quantidade = parseInt(document.getElementById('quantidade').value) || 1;
+  const btn = document.getElementById('btn-pagar');
+
+  if (!nome) {
+    alert('⚠️ Por favor, digite seu nome completo antes de continuar.');
+    document.getElementById('nome').focus();
+    return;
+  }
+
+  if (!turmaSelecionada || !modeloSelecionado || !tamanhoSelecionado) {
+    alert('⚠️ Por favor, preencha todas as opções.');
+    return;
+  }
+
+  const turma = turmaSelecionada.value;
+  const modelo = modeloSelecionado.value;
+  const tamanho = tamanhoSelecionado.value;
+  const total = (quantidade * PRECO_UNIDADE).toFixed(2).replace('.', ',');
+
+  btn.disabled = true;
+  btn.textContent = '⏳ Registrando pedido...';
+
+  try {
+    const formData = new FormData();
+    formData.append('nome', nome);
+    formData.append('turma', turma);
+    formData.append('modelo', modelo);
+    formData.append('tamanho', tamanho);
+    formData.append('quantidade', quantidade);
+    formData.append('valor', total);
+    formData.append('origem', 'site-farda-redes');
+
+    await fetch(URL_PLANILHA, {
+      method: 'POST',
+      body: formData,
+      mode: 'no-cors'
+    });
+  } catch (erro) {
+    console.log('Erro ao registrar na planilha:', erro);
+  }
+
+  document.getElementById('resumo-nome').textContent = nome;
+  document.getElementById('resumo-turma').textContent = turma;
+  document.getElementById('resumo-modelo').textContent = modelo;
+  document.getElementById('resumo-tamanho').textContent = tamanho;
+  document.getElementById('resumo-quantidade').textContent = quantidade + 'x';
+  document.getElementById('resumo-valor').textContent = 'R$ ' + total;
+
+  document.getElementById('tela-formulario').style.display = 'none';
+  document.getElementById('tela-pix').classList.add('ativo');
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ----------------------------------------------------------
+// Copiar chave Pix
+// ----------------------------------------------------------
+function copiarChave() {
+  const btn = document.getElementById('btn-copiar');
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(CHAVE_PIX).then(() => {
+      feedbackCopiado(btn);
+    }).catch(() => {
+      copiarFallback(btn);
+    });
+  } else {
+    copiarFallback(btn);
+  }
+}
+
+function copiarFallback(btn) {
+  const input = document.createElement('input');
+  input.value = CHAVE_PIX;
+  document.body.appendChild(input);
+  input.select();
+  try {
+    document.execCommand('copy');
+    feedbackCopiado(btn);
+  } catch (e) {
+    alert('Não foi possível copiar. A chave é: ' + CHAVE_PIX_FORMATADA);
+  }
+  document.body.removeChild(input);
+}
+
+function feedbackCopiado(btn) {
+  const textoOriginal = btn.innerHTML;
+  btn.classList.add('copiado');
+  btn.innerHTML = '✅ Chave copiada!';
+  setTimeout(() => {
+    btn.classList.remove('copiado');
+    btn.innerHTML = textoOriginal;
+  }, 2000);
+}
+</script>
+
+</body>
+</html>
